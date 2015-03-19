@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b62b9aec-fa3f-4a19-b8cc-e34f1c08fc76" name="Default" comment="" />
+    <ignored path="mrsd.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="mrsd" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="20" selection-start="353" selection-end="353" vertical-scroll-proportion="0.12609456" vertical-offset="108" max-vertical-offset="5166">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="quadTree.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/quadTree.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="54" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0" vertical-offset="53" max-vertical-offset="6012">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Vector.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Feature/Vector.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="0" selection-start="834" selection-end="834" vertical-scroll-proportion="0.0" vertical-offset="522" max-vertical-offset="9288">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Layer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Layer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="740" column="4" selection-start="25243" selection-end="25243" vertical-scroll-proportion="0.0" vertical-offset="13320" max-vertical-offset="24894">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="localhost/mrsd/lib/quadTree.js" />
+        <option value="localhost/mrsd/index.html" />
+        <option value="localhost/mrsd/lib/OpenLayers-2.13/OpenLayers.js" />
+        <option value="$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Symbolizer.js" />
+        <option value="$PROJECT_DIR$/lib/quadTree.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="55" />
+    <option name="y" value="-8" />
+    <option name="width" value="1319" />
+    <option name="height" value="784" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Problems" />
+        <subPane subId="Tests" />
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="mrsd">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mrsd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mrsd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mrsd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.JavaScript" />
+    <property name="recentsLimit" value="5" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="FullScreen" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+  </component>
+  <component name="PublishConfig" serverName="iii" serverId="0ac81a09-6047-4cb3-b29d-b2225c83b4d4">
+    <servers>
+      <server id="0ac81a09-6047-4cb3-b29d-b2225c83b4d4">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="mrsd" />
+          </mappings>
+        </serverdata>
+      </server>
+    </servers>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.index.html">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="name" value="Dart" />
+      <option name="saveOutputToFile" value="false" />
+      <option name="showConsoleOnStdErr" value="false" />
+      <option name="showConsoleOnStdOut" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <browser start="false" url="" with-js-debugger="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true" uri="http://localhost/mrsd/index.html">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b62b9aec-fa3f-4a19-b8cc-e34f1c08fc76" name="Default" comment="" />
+      <created>1406101028152</created>
+      <updated>1406101028152</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="55" y="-8" width="1319" height="784" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12421875" sideWeight="0.5536" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4464" sideWeight="0.49961627" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3984" sideWeight="0.50038373" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="12" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="193" column="4" selection-start="7545" selection-end="7545" vertical-scroll-proportion="0.33277592" vertical-offset="3221" max-vertical-offset="51660" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Geometry/Point.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="234" column="4" selection-start="7553" selection-end="7553" vertical-scroll-proportion="0.33277592" vertical-offset="3959" max-vertical-offset="5148" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Geometry/Polygon.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="18" selection-start="3877" selection-end="3877" vertical-scroll-proportion="0.5735786" vertical-offset="1601" max-vertical-offset="4644" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/BaseTypes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="239" column="4" selection-start="7299" selection-end="7299" vertical-scroll-proportion="-1.4732442" vertical-offset="5129" max-vertical-offset="8388" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Geometry/LinearRing.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="334" column="29" selection-start="12405" selection-end="12405" vertical-scroll-proportion="-0.69063544" vertical-offset="6371" max-vertical-offset="7848" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/SingleFile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="4" selection-start="257" selection-end="257" vertical-scroll-proportion="-0.29431438" vertical-offset="212" max-vertical-offset="1458" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/OpenLayers.debug.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="4" selection-start="2990" selection-end="2990" vertical-scroll-proportion="-4.6660714" vertical-offset="3801" max-vertical-offset="1541160" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Feature.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="25" selection-start="539" selection-end="539" vertical-scroll-proportion="0.24247491" vertical-offset="89" max-vertical-offset="4104" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Popup/FramedCloud.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="-5.2466664" vertical-offset="3436" max-vertical-offset="4140" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="534" column="5" selection-start="8329" selection-end="8329" vertical-scroll-proportion="0.33333334" vertical-offset="9412" max-vertical-offset="16542">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Feature/Vector.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="0" selection-start="834" selection-end="834" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="9234">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Layer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="740" column="4" selection-start="25243" selection-end="25243" vertical-scroll-proportion="0.0" vertical-offset="12958" max-vertical-offset="24840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/OpenLayers-2.13/lib/OpenLayers/Layer/Vector.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="548" column="4" selection-start="19304" selection-end="19304" vertical-scroll-proportion="-0.29666665" vertical-offset="9988" max-vertical-offset="18180" />
+      </provider>
+    </entry>
+    <entry file="http://localhost/mrsd/lib/quadTree.js.map">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/quadTree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="54" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0" vertical-offset="53" max-vertical-offset="6012">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="20" selection-start="353" selection-end="353" vertical-scroll-proportion="0.12609456" vertical-offset="108" max-vertical-offset="5166">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

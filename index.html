@@ -1,0 +1,300 @@
+<html>
+<head><meta http-equiv="Access-Control-Allow-Origin" content=''>
+<title>QuadTree Cluster</title>
+<script src="./lib/OpenLayers-2.13/OpenLayers.js"></script>
+<script src="./lib/k_means.js"></script>
+<script src="./lib/quadTree.js"></script>
+<script type="text/javascript">
+    var flickrData;
+    var startTime,endTime;
+	var map;
+	var clusterLayer,originalLayer;
+	var selectControl;
+
+	function parseData(req)
+	{
+        var json = new OpenLayers.Format.JSON();
+        flickrData = json.read(req.responseText,{});
+        init();
+    }
+
+    function load()
+	{
+        // running into problems with POST:
+        // maybe because the server is now configured to disable POST method
+        // change it to GET, that should be allowed by all servers
+        // OpenLayers.Request.GET({
+        //     url: "./data/flickr/6000.json",
+        //     callback: parseData
+		// });
+
+        // don't read local files, generate points randomly
+        init();
+    }
+
+    function isInViewport(feature,bound){
+		var zoom = map.zoom;
+		var gridNum = Math.pow(2,zoom+2);
+		var shift = 40075016/gridNum;
+		var left = bound.left-shift;
+		var bottom = bound.bottom-shift;
+		var right = bound.right+shift;
+		var top = bound.top+shift;
+		var x = feature.geometry.x;
+		var y = feature.geometry.y;
+		if(x>left && x<right && y>bottom && y<top){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+    function init()
+	{
+		var callTimes = 0;
+
+        // initialize map object
+        var map_proj = new OpenLayers.Projection('EPSG:900913');
+        var data_proj = new OpenLayers.Projection('EPSG:4326');
+        var options = {
+            center: new OpenLayers.LonLat(-105,40).transform(data_proj,map_proj),
+			zoom: 4,
+			eventListeners: {
+				"moveend": mapEvent,
+				"zoomend": mapEvent
+			}
+        };
+        map = new OpenLayers.Map('map',options);
+		map.addControls([
+			new OpenLayers.Control.LayerSwitcher(),
+			new OpenLayers.Control.PanZoomBar()
+		]);
+
+        var arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+                    "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+                    "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+                    "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
+        var baseOSM = new OpenLayers.Layer.OSM("MapQuest-OSM Tiles", arrayOSM);
+
+        var arrayAerial = ["http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+                       "http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+                       "http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+                       "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];
+        var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
+
+        var arrayMapBox = ["https://api.tiles.mapbox.com/v4/mapbox.streets/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+        var mapboxLayer = new OpenLayers.Layer.XYZ("MapBox street", arrayMapBox);
+
+		originalLayer = new OpenLayers.Layer.Vector('originalLayer');
+		map.addLayers([baseOSM,baseAerial,mapboxLayer,originalLayer]);
+
+		//original layer
+		var t_start = new Date();
+
+        var my = new Array();
+        var numRandom = 0;
+
+		//解析json数据到feature
+        // for(var i=0;i<flickrData.length;++i){
+		// 	var photoSet = flickrData[i].photos.photo;
+		// 	for(var j=0;j<photoSet.length;++j){
+		// 		var f = new OpenLayers.Feature.Vector();
+		// 		f.geometry = new OpenLayers.Geometry.Point(photoSet[j].longitude,photoSet[j].latitude);
+		// 		my.push(f);
+		// 	}
+		// }
+        // numRandom = flickrData.length;
+        // alert(numRandom + "points has been loaded.");
+
+        // test random distribution
+        numRandom = 10000;
+        for (var i = 0; i < numRandom; ++i) {
+            var _feat = new OpenLayers.Feature.Vector();
+            _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
+            my.push(_feat);
+        }
+
+        var Style01 = {
+            externalGraphic: "./img/box.png",
+            graphicWidth: 45,
+            graphicHeight: 45,
+            pointerEvents: "visiblePainted"
+        };
+
+		//改变投影
+		var transedFeatures = new Array();
+		for(var i=0;i<my.length;++i){
+			my[i].geometry.transform(data_proj,map_proj);
+			transedFeatures[i] = my[i];
+			transedFeatures[i].style = Style01;
+			originalLayer.addFeatures([my[i]]);
+		}
+        originalLayer.setVisibility(false);
+        // set the transparency of the original data layer
+        //originalLayer.setOpacity(0.5);
+
+		//cluster layer
+		clusterLayer = new OpenLayers.Layer.Vector('clusterLayer');
+        map.addLayer(clusterLayer);
+
+		var codeFeatures = new Array();
+		codeFeatures = codeAll(transedFeatures,20,0);
+
+        var Style02 = {
+            externalGraphic: "./img/whu.jpg",
+            graphicWidth: 45,
+            graphicHeight: 45,
+            pointerEvents: "visiblePainted"
+        };
+        // change style of codeFeatures inherited from transedFeatures
+        for (var i = 0; i < codeFeatures.length; ++i) {
+            codeFeatures[i].style = Style02;
+        }
+
+		var t_end = new Date();
+		console.log( "Building translated quadtree of " + numRandom + " objects takes " + (t_end-t_start)/1000 + "s." );
+
+		//grid layer
+		var gridLayer = new OpenLayers.Layer.Vector('gridLayer');
+        gridLayer.setVisibility(false);
+		map.addLayer(gridLayer);
+
+		//select feature popup
+		selectControl = new OpenLayers.Control.SelectFeature(clusterLayer);
+		map.addControl(selectControl);
+		selectControl.activate();
+		clusterLayer.events.on({
+			"featureselected": onFeatureSelect,
+			"featureunselected": onFeatureUnselect
+		});
+
+		//
+		// event handler
+		//
+		function onFeatureSelect(event){
+			var feature = event.feature;
+			var content = "<div><strong>ID:</strong><br/>"
+				+ feature.id +
+				"<br/><strong>Location:</strong><br/>"
+				+ feature.geometry +
+				"<br/><strong>Score:</strong><br/>"
+				+ feature.attributes.score + "</div>";
+			var popup = new OpenLayers.Popup.FramedCloud("chicken",
+				feature.geometry.getBounds().getCenterLonLat(),
+				new OpenLayers.Size(100,100),
+				content,
+				null,
+				false,
+				null
+			);
+			feature.popup = popup;
+			map.addPopup(popup, /*exclusive*/ true);
+		}
+
+		function onFeatureUnselect(event){
+			var feature = event.feature;
+			if(feature.popup){
+				map.removePopup(feature.popup);
+				feature.popup.destroy();
+				delete feature.popup;
+			}
+		}
+
+		function mapEvent(event)
+		{
+			var curZoom = map.zoom;
+
+			if ( callTimes > 3 )
+			{
+				var d1 = new Date();
+				startTime = d1.getTime();
+
+                // for features in current view port only
+				var inFeatures = new Array();
+				for(var i=0;i!=codeFeatures.length;++i){
+					if(isInViewport(codeFeatures[i],map.getExtent()))
+						inFeatures.push(codeFeatures[i]);
+				}
+
+                var d2 = new Date();
+                endTime = d2.getTime();
+                var procTime = (endTime-startTime)/1000;
+                //alert( "Query objects in viewport takes: " + procTime + "s.");
+
+				if (inFeatures.length == 0)
+					return;
+
+                d1 = new Date();
+                startTime = d1.getTime();
+
+				// curZoom-3
+                var quadLevel = curZoom + 2;
+
+				for(var i=0;i!=inFeatures.length;++i)
+					inFeatures[i].attributes.ds[quadLevel/*curZoom-3*/] = 0;
+
+				if(inFeatures.length!=0){
+					for(var i=0;i!=9;++i) {
+//						dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
+                        calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
+                    }
+					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
+				}
+
+                var clusteredFeatures = new Array();
+				clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
+
+				clusterLayer.removeAllFeatures();
+				for(i=0;i<clusteredFeatures.length;++i){
+					clusterLayer.addFeatures([clusteredFeatures[i]]);
+				}
+
+				d2 = new Date();
+				endTime = d2.getTime();
+				var procTime = (endTime-startTime)/1000;
+                console.log("Event time: " + new Date() + "\n");
+				console.log("-- Event type: " + event.type + "\n -- Zoom level: " + map.zoom + "\n");
+                console.log("-- MRSD Retrieval time: " + procTime + "s.\n");
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// debug mode: draw quadtree grids
+				// should be optimized to draw lines only withing the extent of current map view
+
+				if ( curZoom <= 4 )
+				{
+					var gridNum = Math.pow(2,curZoom+2);
+					if(gridLayer != null)
+						gridLayer.removeAllFeatures();
+					for(var i=0;i!=gridNum;++i){
+						var shift = 40075016/gridNum;
+						var point1 = new OpenLayers.Geometry.Point(-20037508+i*shift,-20037508);
+						var point2 = new OpenLayers.Geometry.Point(-20037508+i*shift,20037508);
+						var point3 = new OpenLayers.Geometry.Point(-20037508,-20037508+i*shift);
+						var point4 = new OpenLayers.Geometry.Point(20037508,-20037508+i*shift);
+						var style_green = {
+								strokeColor: "#339933",
+								strokeOpacity: 1,
+								strokeWidth: 1,
+								pointRadius: 6,
+								pointerEvents: "visiblePainted"
+						};
+						var f1 = new OpenLayers.Feature.Vector(
+							new OpenLayers.Geometry.LineString([point1,point2]),null,style_green);
+						var f2 = new OpenLayers.Feature.Vector(
+							new OpenLayers.Geometry.LineString([point3,point4]),null,style_green);
+						gridLayer.addFeatures([f1,f2]);
+					}
+				}
+			}
+			++callTimes;
+		}
+    }
+
+
+</script>
+</head>
+
+<body onLoad="load()">
+    <div id="map"></div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<html>
+<head><meta http-equiv="Access-Control-Allow-Origin" content=''>
+<title>VGI Visualisation</title>
+<script src="./lib/OpenLayers-2.13/OpenLayers.js"></script>
+<script src="./lib/k_means.js"></script>
+<script src="./lib/quadTree.js"></script>
+<script type="text/javascript">
+    var my;
+    var startTime,endTime;
+	var map;
+	var clusterLayer,originalLayer;
+	var selectControl;
+
+    function parseData(req) 
+	{
+        var kml = new OpenLayers.Format.KML({extractStyles: false});
+        my = kml.read(req.responseText);
+        init();
+    }
+
+    function load()
+	{
+        OpenLayers.Request.GET({
+            url: "./data/ski.kml",
+            callback: parseData
+		});
+    }
+	
+	function isInViewport(feature,bound){
+		var left = bound.left;
+		var bottom = bound.bottom;
+		var right = bound.right;
+		var top = bound.top;
+		var x = feature.geometry.x;
+		var y = feature.geometry.y;
+		if(x>left && x<right && y>bottom && y<top){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+    function init()
+	{
+		var callTimes = 0;
+        var map_proj = new OpenLayers.Projection('EPSG:900913');
+        var data_proj = new OpenLayers.Projection('EPSG:4326');  
+        var options = {
+            center: new OpenLayers.LonLat(-105,40).transform(data_proj,map_proj),
+			zoom: 4,
+			eventListeners: {
+				"moveend": mapEvent,
+				"zoomend": mapEvent
+			}
+        };
+        map = new OpenLayers.Map('map',options);
+		map.addControls([
+			new OpenLayers.Control.LayerSwitcher(),
+			new OpenLayers.Control.PanZoomBar()
+		]);		
+        var arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+                    "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+                    "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+                    "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
+        var arrayAerial = ["http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+                       "http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+                       "http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+                       "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];       
+        var baseOSM = new OpenLayers.Layer.OSM("MapQuest-OSM Tiles", arrayOSM);
+        var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
+		originalLayer = new OpenLayers.Layer.Vector('originalLayer');
+		map.addLayers([baseOSM,baseAerial,originalLayer]);
+		
+		//original layer
+		var myStyle = {
+			externalGraphic: "./img/cartman.jpg",
+			graphicWidth: 45,
+			graphicHeight: 45,
+			pointerEvents: "visiblePainted"
+		};
+		var transedFeatures = new Array();  //改变投影
+		for(var i=0;i<my.length;++i){
+			my[i].geometry.transform(data_proj,map_proj);
+			transedFeatures[i] = my[i];
+			transedFeatures[i].style = myStyle;
+			map.layers[2].addFeatures([my[i]]);
+		}
+
+		//cluster layer
+		clusterLayer = new OpenLayers.Layer.Vector('clusterLayer');
+		var codeFeatures = new Array();
+		//var kclusters = Math.round(my.length/10);  //聚类个数设置	
+		var d = new Date();
+		startTime = d.getTime();
+		//clusteredFeatures = k_means(transedFeatures,kclusters,10);
+		codeFeatures = codeAll(transedFeatures,18,0);
+		var inFeatures = new Array();
+		if(map.getExtent().x!=null){
+			for(var i=0;i!=codeFeatures.length;++i){
+				if(isInViewport(codeFeatures[i],map.getExtent()))
+					inFeatures.push(codeFeatures[i]);
+			}
+			if(inFeatures.length!=0){
+				for(var i=0;i!=9;++i)
+					dScoreFine(inFeatures,5,map.getExtent(),i);
+			}
+			clusteredFeatures = quadTreeCluster(inFeatures,9);
+		}
+		d = new Date();
+		endTime = d.getTime();
+		
+		map.addLayer(clusterLayer);
+		//map.zoomTo(4);
+		//map.setCenter(new OpenLayers.LonLat(-105,40).transform(data_proj,map_proj));
+
+		//grid layer
+		var gridLayer = new OpenLayers.Layer.Vector('gridLayer');
+		map.addLayer(gridLayer);
+		
+		//select feature popup
+		selectControl = new OpenLayers.Control.SelectFeature(clusterLayer);
+		map.addControl(selectControl);
+		selectControl.activate();
+		clusterLayer.events.on({
+			"featureselected": onFeatureSelect,
+			"featureunselected": onFeatureUnselect
+		});
+		function onFeatureSelect(event){
+			var feature = event.feature;
+			var content = "<div><strong>ID:</strong><br/>"
+				+ feature.id +
+				"<br/><strong>Location:</strong><br/>"
+				+ feature.geometry + 
+				"<br/><strong>Score:</strong><br/>"
+				+ feature.attributes.score + "</div>";
+			var popup = new OpenLayers.Popup.FramedCloud("chicken",
+				feature.geometry.getBounds().getCenterLonLat(),
+				new OpenLayers.Size(100,100),
+				content,
+				null,
+				false,
+				null
+			);
+			feature.popup = popup;
+			map.addPopup(popup);
+		}
+		function onFeatureUnselect(event){
+			var feature = event.feature;
+			if(feature.popup){
+				map.removePopup(feature.popup);
+				feature.popup.destroy();
+				delete feature.popup;
+			}
+		}
+		
+		function mapEvent(event){
+			var inFeatures = new Array();
+			var clusteredFeatures = new Array();
+			var curZoom = map.zoom;
+			if(callTimes>3){
+				for(var i=0;i!=codeFeatures.length;++i){
+					if(isInViewport(codeFeatures[i],map.getExtent()))
+						inFeatures.push(codeFeatures[i]);
+				}
+				for(var i=0;i!=inFeatures.length;++i)
+					inFeatures[i].attributes.ds[curZoom-3] = 0;
+				if(inFeatures.length!=0){
+					for(var i=0;i!=9;++i)
+						dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
+				}
+				clusteredFeatures = quadTreeCluster(inFeatures,curZoom-3,9);
+				clusterLayer.removeAllFeatures();
+				for(i=0;i<clusteredFeatures.length;++i){
+					clusterLayer.addFeatures([clusteredFeatures[i]]);
+				}
+					
+				var zoom = map.zoom;
+				var gridNum = Math.pow(2,zoom+2);
+				//var gridNum = 32;
+				if(gridLayer != null)
+					gridLayer.removeAllFeatures();
+				for(var i=0;i!=gridNum;++i){
+					var shift = 40075016/gridNum;
+					var point1 = new OpenLayers.Geometry.Point(-20037508+i*shift,-20037508);
+					var point2 = new OpenLayers.Geometry.Point(-20037508+i*shift,20037508);
+					var point3 = new OpenLayers.Geometry.Point(-20037508,-20037508+i*shift);
+					var point4 = new OpenLayers.Geometry.Point(20037508,-20037508+i*shift);
+					var style_green = {
+							strokeColor: "#339933",
+							strokeOpacity: 1,
+							strokeWidth: 1,
+							pointRadius: 6,
+							pointerEvents: "visiblePainted"
+					};
+					var f1 = new OpenLayers.Feature.Vector(
+						new OpenLayers.Geometry.LineString([point1,point2]),null,style_green);
+					var f2 = new OpenLayers.Feature.Vector(
+						new OpenLayers.Geometry.LineString([point3,point4]),null,style_green);
+					gridLayer.addFeatures([f1,f2]);
+				}
+			}
+			++callTimes;
+		}
+		
+		var procTime = (endTime-startTime)/1000;
+		alert(procTime);
+		//alert(my.length);
+    }   
+	
+	
+</script>
+</head>
+
+<body onLoad="load()">
+    <div id="map"></div>
+</body>
+</html>
