@@ -104,7 +104,6 @@
 		// 	}
 		// }
         // numRandom = flickrData.length;
-        // alert(numRandom + "points has been loaded.");
 
         // test random distribution
         numRandom = 10000;
@@ -113,6 +112,7 @@
             _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
             my.push(_feat);
         }
+        console(numRandom + " icons has been loaded.");
 
         var Style01 = {
             externalGraphic: "./img/box.png",
@@ -219,7 +219,7 @@
                 var d2 = new Date();
                 endTime = d2.getTime();
                 var procTime = (endTime-startTime)/1000;
-                //alert( "Query objects in viewport takes: " + procTime + "s.");
+                // alert( "Query objects in viewport takes: " + procTime + "s.");
 
 				if (inFeatures.length == 0)
 					return;
@@ -235,7 +235,7 @@
 
 				if(inFeatures.length!=0){
 					for(var i=0;i!=9;++i) {
-//						dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
+						// dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
                         calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
                     }
 					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
