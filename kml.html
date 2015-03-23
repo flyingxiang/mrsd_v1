@@ -5,27 +5,29 @@
 <script src="./lib/k_means.js"></script>
 <script src="./lib/quadTree.js"></script>
 <script type="text/javascript">
-    var my;
+    var flickrData;
     var startTime,endTime;
 	var map;
 	var clusterLayer,originalLayer;
 	var selectControl;
 
-    function parseData(req) 
+    function parseData(req)
 	{
-        var kml = new OpenLayers.Format.KML({extractStyles: false});
-        my = kml.read(req.responseText);
+        // var kml = new OpenLayers.Format.KML({extractStyles: false});
+        // my = kml.read(req.responseText);
+        var json = new OpenLayers.Format.JSON();
+        flickrData = json.read(req.responseText, {});
         init();
     }
 
     function load()
 	{
         OpenLayers.Request.GET({
-            url: "./data/ski.kml",
+            url: "./data/flickr/6000.json",
             callback: parseData
 		});
     }
-	
+
 	function isInViewport(feature,bound){
 		var left = bound.left;
 		var bottom = bound.bottom;
@@ -39,12 +41,12 @@
 			return false;
 		}
 	}
-	
+
     function init()
 	{
 		var callTimes = 0;
         var map_proj = new OpenLayers.Projection('EPSG:900913');
-        var data_proj = new OpenLayers.Projection('EPSG:4326');  
+        var data_proj = new OpenLayers.Projection('EPSG:4326');
         var options = {
             center: new OpenLayers.LonLat(-105,40).transform(data_proj,map_proj),
 			zoom: 4,
@@ -57,7 +59,7 @@
 		map.addControls([
 			new OpenLayers.Control.LayerSwitcher(),
 			new OpenLayers.Control.PanZoomBar()
-		]);		
+		]);
         var arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
                     "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
                     "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
@@ -65,12 +67,24 @@
         var arrayAerial = ["http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
                        "http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
                        "http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-                       "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];       
+                       "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];
         var baseOSM = new OpenLayers.Layer.OSM("MapQuest-OSM Tiles", arrayOSM);
         var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
 		originalLayer = new OpenLayers.Layer.Vector('originalLayer');
 		map.addLayers([baseOSM,baseAerial,originalLayer]);
-		
+
+        //解析json数据到feature
+        var my = new Array();
+        for (var i = 0; i < flickrData.length; ++i) {
+            var photoSet = flickrData[i].photos.photo;
+            for (var j = 0; j < photoSet.length; ++j) {
+                var f = new OpenLayers.Feature.Vector();
+                f.geometry = new OpenLayers.Geometry.Point(photoSet[j].longitude,photoSet[j].latitude);
+                my.push(f);
+            }
+            // numRandom += photoSet.length;
+        }
+
 		//original layer
 		var myStyle = {
 			externalGraphic: "./img/cartman.jpg",
@@ -78,6 +92,7 @@
 			graphicHeight: 45,
 			pointerEvents: "visiblePainted"
 		};
+
 		var transedFeatures = new Array();  //改变投影
 		for(var i=0;i<my.length;++i){
 			my[i].geometry.transform(data_proj,map_proj);
@@ -86,29 +101,17 @@
 			map.layers[2].addFeatures([my[i]]);
 		}
 
-		//cluster layer
+
+		//clustering point layer using k-means
 		clusterLayer = new OpenLayers.Layer.Vector('clusterLayer');
-		var codeFeatures = new Array();
-		//var kclusters = Math.round(my.length/10);  //聚类个数设置	
+		var kclusters = Math.round(my.length/10);  //聚类个数设置
 		var d = new Date();
 		startTime = d.getTime();
-		//clusteredFeatures = k_means(transedFeatures,kclusters,10);
-		codeFeatures = codeAll(transedFeatures,18,0);
-		var inFeatures = new Array();
-		if(map.getExtent().x!=null){
-			for(var i=0;i!=codeFeatures.length;++i){
-				if(isInViewport(codeFeatures[i],map.getExtent()))
-					inFeatures.push(codeFeatures[i]);
-			}
-			if(inFeatures.length!=0){
-				for(var i=0;i!=9;++i)
-					dScoreFine(inFeatures,5,map.getExtent(),i);
-			}
-			clusteredFeatures = quadTreeCluster(inFeatures,9);
-		}
+		clusteredFeatures = k_means(transedFeatures,kclusters,10);
+
 		d = new Date();
 		endTime = d.getTime();
-		
+
 		map.addLayer(clusterLayer);
 		//map.zoomTo(4);
 		//map.setCenter(new OpenLayers.LonLat(-105,40).transform(data_proj,map_proj));
@@ -116,7 +119,7 @@
 		//grid layer
 		var gridLayer = new OpenLayers.Layer.Vector('gridLayer');
 		map.addLayer(gridLayer);
-		
+
 		//select feature popup
 		selectControl = new OpenLayers.Control.SelectFeature(clusterLayer);
 		map.addControl(selectControl);
@@ -130,7 +133,7 @@
 			var content = "<div><strong>ID:</strong><br/>"
 				+ feature.id +
 				"<br/><strong>Location:</strong><br/>"
-				+ feature.geometry + 
+				+ feature.geometry +
 				"<br/><strong>Score:</strong><br/>"
 				+ feature.attributes.score + "</div>";
 			var popup = new OpenLayers.Popup.FramedCloud("chicken",
@@ -152,28 +155,28 @@
 				delete feature.popup;
 			}
 		}
-		
-		function mapEvent(event){
-			var inFeatures = new Array();
-			var clusteredFeatures = new Array();
-			var curZoom = map.zoom;
-			if(callTimes>3){
-				for(var i=0;i!=codeFeatures.length;++i){
-					if(isInViewport(codeFeatures[i],map.getExtent()))
-						inFeatures.push(codeFeatures[i]);
-				}
-				for(var i=0;i!=inFeatures.length;++i)
-					inFeatures[i].attributes.ds[curZoom-3] = 0;
-				if(inFeatures.length!=0){
-					for(var i=0;i!=9;++i)
-						dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
-				}
-				clusteredFeatures = quadTreeCluster(inFeatures,curZoom-3,9);
-				clusterLayer.removeAllFeatures();
-				for(i=0;i<clusteredFeatures.length;++i){
-					clusterLayer.addFeatures([clusteredFeatures[i]]);
-				}
-					
+
+		function mapEvent(event) {
+			// var inFeatures = new Array();
+			// var clusteredFeatures = new Array();
+			// var curZoom = map.zoom;
+			// if(callTimes>3){
+			// 	for(var i=0;i!=codeFeatures.length;++i){
+			// 		if(isInViewport(codeFeatures[i],map.getExtent()))
+			// 			inFeatures.push(codeFeatures[i]);
+			// 	}
+			// 	for(var i=0;i!=inFeatures.length;++i)
+			// 		inFeatures[i].attributes.ds[curZoom-3] = 0;
+			// 	if(inFeatures.length!=0){
+			// 		for(var i=0;i!=9;++i)
+			// 			dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
+			// 	}
+			// 	clusteredFeatures = quadTreeCluster(inFeatures,curZoom-3,9);
+			// 	clusterLayer.removeAllFeatures();
+			// 	for(i=0;i<clusteredFeatures.length;++i){
+			// 		clusterLayer.addFeatures([clusteredFeatures[i]]);
+			// 	}
+
 				var zoom = map.zoom;
 				var gridNum = Math.pow(2,zoom+2);
 				//var gridNum = 32;
@@ -201,13 +204,11 @@
 			}
 			++callTimes;
 		}
-		
+
 		var procTime = (endTime-startTime)/1000;
-		alert(procTime);
+		// alert(procTime);
 		//alert(my.length);
-    }   
-	
-	
+    }
 </script>
 </head>
 
