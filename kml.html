@@ -87,7 +87,7 @@
 
 		//original layer
 		var myStyle = {
-			externalGraphic: "./img/cartman.jpg",
+			externalGraphic: "./img/box.png",
 			graphicWidth: 45,
 			graphicHeight: 45,
 			pointerEvents: "visiblePainted"
@@ -98,16 +98,17 @@
 			my[i].geometry.transform(data_proj,map_proj);
 			transedFeatures[i] = my[i];
 			transedFeatures[i].style = myStyle;
-			map.layers[2].addFeatures([my[i]]);
+			originalLayer.addFeatures([my[i]]);
 		}
 
 
 		//clustering point layer using k-means
 		clusterLayer = new OpenLayers.Layer.Vector('clusterLayer');
-		var kclusters = Math.round(my.length/10);  //聚类个数设置
 		var d = new Date();
 		startTime = d.getTime();
-		clusteredFeatures = k_means(transedFeatures,kclusters,10);
+
+        // var kclusters = Math.round(my.length/10);  //聚类个数设置
+		// clusteredFeatures = k_means(transedFeatures,kclusters,10);
 
 		d = new Date();
 		endTime = d.getTime();
@@ -157,25 +158,41 @@
 		}
 
 		function mapEvent(event) {
-			var inFeatures = new Array();
-			var clusteredFeatures = new Array();
+			// var inFeatures = new Array();
+			// var clusteredFeatures = new Array();
 			var curZoom = map.zoom;
 			if (callTimes > 3) {
-			// 	for(var i=0;i!=codeFeatures.length;++i){
-			// 		if(isInViewport(codeFeatures[i],map.getExtent()))
-			// 			inFeatures.push(codeFeatures[i]);
-			// 	}
-			// 	for(var i=0;i!=inFeatures.length;++i)
-			// 		inFeatures[i].attributes.ds[curZoom-3] = 0;
-			// 	if(inFeatures.length!=0){
-			// 		for(var i=0;i!=9;++i)
-			// 			dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
-			// 	}
-			// 	clusteredFeatures = quadTreeCluster(inFeatures,curZoom-3,9);
-			// 	clusterLayer.removeAllFeatures();
-			// 	for(i=0;i<clusteredFeatures.length;++i){
-			// 		clusterLayer.addFeatures([clusteredFeatures[i]]);
-			// 	}
+                var kclusters = Math.round(my.length / 100);  //聚类个数设置
+                var clusteredFeatures = k_means(my, kclusters, 10);
+
+                var myStyle2 = {
+                    externalGraphic: "./img/cartman.jpg",
+                    graphicWidth: 45,
+                    graphicHeight: 45,
+                    pointerEvents: "visiblePainted"
+                };
+
+                clusterLayer.removeAllFeatures();
+                for ( var i = 0; i < clusteredFeatures.length; ++i ) {
+                    clusteredFeatures.style = myStyle2;
+                    clusterLayer.addFeatures(clusteredFeatures[i]);
+                }
+
+				// for(var i=0;i!=codeFeatures.length;++i){
+				// 	if(isInViewport(codeFeatures[i],map.getExtent()))
+				// 		inFeatures.push(codeFeatures[i]);
+				// }
+				// for(var i=0;i!=inFeatures.length;++i)
+				// 	inFeatures[i].attributes.ds[curZoom-3] = 0;
+				// if(inFeatures.length!=0){
+				// 	for(var i=0;i!=9;++i)
+				// 		dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
+				// }
+				// clusteredFeatures = quadTreeCluster(inFeatures,curZoom-3,9);
+				// clusterLayer.removeAllFeatures();
+				// for(i=0;i<clusteredFeatures.length;++i){
+				// 	clusterLayer.addFeatures([clusteredFeatures[i]]);
+				// }
 
 				var zoom = map.zoom;
 				var gridNum = Math.pow(2,zoom+2);
