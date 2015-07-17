@@ -20,16 +20,16 @@
 
     function load()
 	{
-        // running into problems with POST:
-        // maybe because the server is now configured to disable POST method
-        // change it to GET, that should be allowed by all servers
- //       OpenLayers.Request.GET({
- //           url: "./data/flickr/6000.json",
- //           callback: parseData
-	// });
+        running into problems with POST:
+        maybe because the server is now configured to disable POST method
+        change it to GET, that should be allowed by all servers
+        OpenLayers.Request.GET({
+            url: "./data/flickr/6000.json",
+            callback: parseData
+	});
 
         // don't read local files, generate points randomly
-        init();
+        // init();
     }
 
     function isInViewport(feature,bound){
@@ -95,23 +95,23 @@
         var numRandom = 0;
 
 	//解析json数据到feature
- //       for(var i=0;i<flickrData.length;++i) {
-	// 		var photoSet = flickrData[i].photos.photo;
-	// 		for(var j=0;j<photoSet.length;++j){
-	// 			var f = new OpenLayers.Feature.Vector();
-	// 			f.geometry = new OpenLayers.Geometry.Point(photoSet[j].longitude,photoSet[j].latitude);
-	// 			my.push(f);
-	// 		}
- //           numRandom += photoSet.length;
-	// }
+        for(var i=0;i<flickrData.length;++i) {
+			var photoSet = flickrData[i].photos.photo;
+			for(var j=0;j<photoSet.length;++j){
+				var f = new OpenLayers.Feature.Vector();
+				f.geometry = new OpenLayers.Geometry.Point(photoSet[j].longitude,photoSet[j].latitude);
+				my.push(f);
+			}
+            numRandom += photoSet.length;
+	}
 
         // test random distribution
-        numRandom = 100000;
-        for (var i = 0; i < numRandom; ++i) {
-            var _feat = new OpenLayers.Feature.Vector();
-            _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
-            my.push(_feat);
-        }
+        // numRandom = 100000;
+        // for (var i = 0; i < numRandom; ++i) {
+        //     var _feat = new OpenLayers.Feature.Vector();
+        //     _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
+        //     my.push(_feat);
+        // }
 
         console.log(numRandom + " icons has been loaded.");
 
