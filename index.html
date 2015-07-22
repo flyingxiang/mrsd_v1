@@ -209,40 +209,45 @@
 			{
 				var d1 = new Date();
 				startTime = d1.getTime();
+				
+                		console.log("Event time: " + d1 + "\n");
+				console.log("-- Event type: " + event.type + "\n -- Zoom level: " + map.zoom + "\n");
 
-                // for features in current view port only
+                		// for features in current view port only
 				var inFeatures = new Array();
 				for(var i=0;i!=codeFeatures.length;++i){
 					if(isInViewport(codeFeatures[i],map.getExtent()))
 						inFeatures.push(codeFeatures[i]);
 				}
+				
+                		var d2 = new Date();
+                		endTime = d2.getTime();
+                		var procTime = (endTime-startTime);
+                		console.log("-- Window Query time: " + procTime + "ms.\n");
 
-                var d2 = new Date();
-                endTime = d2.getTime();
-                var procTime = (endTime-startTime)/1000;
-                // alert( "Query objects in viewport takes: " + procTime + "s.");
-
-				if (inFeatures.length == 0)
+				if (inFeatures.length == 0) {
 					return;
-
-                d1 = new Date();
-                startTime = d1.getTime();
+				}
+				
+                		d1 = new Date();
+                		startTime = d1.getTime();
 
 				// curZoom-3
-                var quadLevel = curZoom + 2;
+                		var quadLevel = curZoom + 2;
 
-				for(var i=0;i!=inFeatures.length;++i)
+				for(var i=0;i!=inFeatures.length;++i) {
 					inFeatures[i].attributes.ds[quadLevel/*curZoom-3*/] = 0;
+				}
 
-				if(inFeatures.length!=0){
+				if(inFeatures.length!=0) {
 					for(var i=0;i!=9;++i) {
 						// dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
-                        calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
-                    }
+                        			calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
+                    			}
 					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
 				}
 
-                var clusteredFeatures = new Array();
+                		var clusteredFeatures = new Array();
 				clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
 
 				clusterLayer.removeAllFeatures();
@@ -252,10 +257,8 @@
 
 				d2 = new Date();
 				endTime = d2.getTime();
-				var procTime = (endTime-startTime);
-                console.log("Event time: " + new Date() + "\n");
-				console.log("-- Event type: " + event.type + "\n -- Zoom level: " + map.zoom + "\n");
-                console.log("-- MRSD Retrieval time: " + procTime + "ms.\n");
+				procTime = (endTime-startTime);
+                		console.log("-- MRSD Retrieval time: " + procTime + "ms.\n");
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// debug mode: draw quadtree grids
