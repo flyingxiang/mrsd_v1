@@ -213,6 +213,7 @@
                 console.log("Event time: " + d1 + "\n");
 				console.log("-- Event type: " + event.type + "\n")
 				console.log("-- Zoom level: " + map.zoom + "\n");
+				console.log("-- # Scaned points:" + codeFeatures.length + "\n");
 
                 // for features in current view port only
 				var inFeatures = new Array();
@@ -223,9 +224,9 @@
 				}
 				
         		var d2 = new Date();
-        		endTime = d2.getTime();
+        		endTime = d2.getTime();	
         		var procTime = (endTime-startTime);
-        		console.log("-- Window Query time: " + procTime + "ms.\n");
+        		console.log("-- Window Query time: " + procTime + "ms." + " (# points: " + inFeatures.length + ")\n");
 
 				if (inFeatures.length == 0) {
 					return;
@@ -260,7 +261,7 @@
 				d2 = new Date();
 				endTime = d2.getTime();
 				procTime = (endTime-startTime);
-        		console.log("-- MRSD Retrieval time: " + procTime + "ms.\n");
+        		console.log("-- MRSD Retrieval time: " + procTime + "ms." + " (# points: " + clusteredFeatures.length + ")\n");
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// debug mode: draw quadtree grids
