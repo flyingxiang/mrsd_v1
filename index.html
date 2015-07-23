@@ -23,13 +23,13 @@
         // running into problems with POST:
         // maybe because the server is now configured to disable POST method
         // change it to GET, that should be allowed by all servers
-        OpenLayers.Request.GET({
-            url: "./data/flickr/6000.json",
-            callback: parseData
-	});
+  //      OpenLayers.Request.GET({
+  //          url: "./data/flickr/6000.json",
+  //          callback: parseData
+		// });
 
         // don't read local files, generate points randomly
-        // init();
+        init();
     }
 
     function isInViewport(feature,bound){
@@ -89,29 +89,27 @@
 		map.addLayers([baseOSM,baseAerial,mapboxLayer,originalLayer]);
 
 		//original layer
-		var t_start = new Date();
-
         var my = new Array();
         var numRandom = 0;
 
-	//解析json数据到feature
-        for(var i=0;i<flickrData.length;++i) {
-			var photoSet = flickrData[i].photos.photo;
-			for(var j=0;j<photoSet.length;++j){
-				var f = new OpenLayers.Feature.Vector();
-				f.geometry = new OpenLayers.Geometry.Point(photoSet[j].longitude,photoSet[j].latitude);
-				my.push(f);
-			}
-            numRandom += photoSet.length;
-	}
+		//解析json数据到feature
+  //      for(var i=0;i<flickrData.length;++i) {
+		// 	var photoSet = flickrData[i].photos.photo;
+		// 	for(var j=0;j<photoSet.length;++j){
+		// 		var f = new OpenLayers.Feature.Vector();
+		// 		f.geometry = new OpenLayers.Geometry.Point(photoSet[j].longitude,photoSet[j].latitude);
+		// 		my.push(f);
+		// 	}
+  //          numRandom += photoSet.length;
+		// }
 
         // test random distribution
-        // numRandom = 100000;
-        // for (var i = 0; i < numRandom; ++i) {
-        //     var _feat = new OpenLayers.Feature.Vector();
-        //     _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
-        //     my.push(_feat);
-        // }
+        numRandom = 100000;
+        for (var i = 0; i < numRandom; ++i) {
+            var _feat = new OpenLayers.Feature.Vector();
+            _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
+            my.push(_feat);
+        }
 
         console.log(numRandom + " icons has been loaded.");
 
@@ -121,7 +119,9 @@
             graphicHeight: 45,
             pointerEvents: "visiblePainted"
         };
-
+		
+		var t_start = new Date();
+		
 		//改变投影
 		var transedFeatures = new Array();
 		for(var i=0;i<my.length;++i){
@@ -210,30 +210,32 @@
 				var d1 = new Date();
 				startTime = d1.getTime();
 				
-                		console.log("Event time: " + d1 + "\n");
-				console.log("-- Event type: " + event.type + "\n -- Zoom level: " + map.zoom + "\n");
+                console.log("Event time: " + d1 + "\n");
+				console.log("-- Event type: " + event.type + "\n")
+				console.log("-- Zoom level: " + map.zoom + "\n");
 
-                		// for features in current view port only
+                // for features in current view port only
 				var inFeatures = new Array();
-				for(var i=0;i!=codeFeatures.length;++i){
-					if(isInViewport(codeFeatures[i],map.getExtent()))
+				for(var i=0;i!=codeFeatures.length;++i) {
+					if(isInViewport(codeFeatures[i],map.getExtent())) {
 						inFeatures.push(codeFeatures[i]);
+					}
 				}
 				
-                		var d2 = new Date();
-                		endTime = d2.getTime();
-                		var procTime = (endTime-startTime);
-                		console.log("-- Window Query time: " + procTime + "ms.\n");
+        		var d2 = new Date();
+        		endTime = d2.getTime();
+        		var procTime = (endTime-startTime);
+        		console.log("-- Window Query time: " + procTime + "ms.\n");
 
 				if (inFeatures.length == 0) {
 					return;
 				}
 				
-                		d1 = new Date();
-                		startTime = d1.getTime();
+        		d1 = new Date();
+        		startTime = d1.getTime();
 
 				// curZoom-3
-                		var quadLevel = curZoom + 2;
+                var quadLevel = curZoom + 2;
 
 				for(var i=0;i!=inFeatures.length;++i) {
 					inFeatures[i].attributes.ds[quadLevel/*curZoom-3*/] = 0;
@@ -242,12 +244,12 @@
 				if(inFeatures.length!=0) {
 					for(var i=0;i!=9;++i) {
 						// dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
-                        			calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
-                    			}
+            			calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
+        			}
 					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
 				}
 
-                		var clusteredFeatures = new Array();
+        		var clusteredFeatures = new Array();
 				clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
 
 				clusterLayer.removeAllFeatures();
@@ -258,7 +260,7 @@
 				d2 = new Date();
 				endTime = d2.getTime();
 				procTime = (endTime-startTime);
-                		console.log("-- MRSD Retrieval time: " + procTime + "ms.\n");
+        		console.log("-- MRSD Retrieval time: " + procTime + "ms.\n");
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// debug mode: draw quadtree grids
@@ -267,9 +269,11 @@
 				if ( curZoom <= 4 )
 				{
 					var gridNum = Math.pow(2,curZoom+2);
-					if(gridLayer != null)
+					if(gridLayer != null) {
 						gridLayer.removeAllFeatures();
-					for(var i=0;i!=gridNum;++i){
+					}
+					
+					for(var i=0;i!=gridNum;++i) {
 						var shift = 40075016/gridNum;
 						var point1 = new OpenLayers.Geometry.Point(-20037508+i*shift,-20037508);
 						var point2 = new OpenLayers.Geometry.Point(-20037508+i*shift,20037508);
