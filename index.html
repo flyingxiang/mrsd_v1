@@ -143,7 +143,7 @@
         map.addLayer(cluLayer2);
 
 		var codeFeatures = new Array();
-		codeFeatures = codeAll(transedFeatures,22,0);
+		codeFeatures = codeAll(transedFeatures,20,0);
 
         var Style02 = {
             externalGraphic: "./img/whu.jpg",
@@ -244,40 +244,40 @@
                 var quadLevel2 = quadLevel + 2;
                 
 				for (var i = 0; i != inFeatures.length; ++i) {
-					// inFeatures[i].attributes.ds[quadLevel/*curZoom-3*/] = 0;
-					inFeatures[i].attributes.ds[quadLevel2] = 0;
+					inFeatures[i].attributes.ds[quadLevel/*curZoom-3*/] = 0;
+					// inFeatures[i].attributes.ds[quadLevel2] = 0;
 				}
 
 				if(inFeatures.length!=0) {
 					for(var i=0;i!=9;++i) {
 						// dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
-            			// calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i); 		// primary
-            			calculateScoreInWindow(inFeatures, quadLevel2, map.getExtent(), i);	// secondary
+            			calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i); 		// primary
+            			// calculateScoreInWindow(inFeatures, quadLevel2, map.getExtent(), i);	// secondary
         			}
 					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
 				}
 
-    //     		var clusteredFeatures = new Array();
-				// clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
+        		var clusteredFeatures = new Array();
+				clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
 				
-				// // primary symbols
-				// clusterLayer.removeAllFeatures();
-				// for (i=0; i<clusteredFeatures.length; ++i) {
-				// 	clusterFeatures[i].style.graphicWidth = 45;
-				// 	clusterFeatures[i].style.graphicHeight = 45;
-				// 	clusterLayer.addFeatures([clusteredFeatures[i]]);
-				// }
-				
-				var cluFeat2 = new Array();
-				cluFeat2 = quadTreeCluster(inFeatures, quadLevel2, 9);
-				
-				// secondary symbols
-				cluLayer.removeAllFeatures();
-				for (i = 0; i < cluFeat2.length; ++i) {
-					cluFeat2[i].style.graphicWidth = 12;
-					cluFeat2[i].style.graphicHeight = 12;
-					cluLayer.addFeatures([cluFeat2[i]]);
+				// primary symbols
+				clusterLayer.removeAllFeatures();
+				for (i=0; i<clusteredFeatures.length; ++i) {
+					// clusterFeatures[i].style.graphicWidth = 45;
+					// clusterFeatures[i].style.graphicHeight = 45;
+					clusterLayer.addFeatures([clusteredFeatures[i]]);
 				}
+				
+				// var cluFeat2 = new Array();
+				// cluFeat2 = quadTreeCluster(inFeatures, quadLevel2, 9);
+				
+				// // secondary symbols
+				// cluLayer.removeAllFeatures();
+				// for (i = 0; i < cluFeat2.length; ++i) {
+				// 	cluFeat2[i].style.graphicWidth = 12;
+				// 	cluFeat2[i].style.graphicHeight = 12;
+				// 	cluLayer.addFeatures([cluFeat2[i]]);
+				// }
 
 				d2 = new Date();
 				endTime = d2.getTime();
