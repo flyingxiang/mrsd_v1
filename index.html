@@ -134,9 +134,13 @@
         // set the transparency of the original data layer
         //originalLayer.setOpacity(0.5);
 
-		//cluster layer
+		//cluster layer primary
 		clusterLayer = new OpenLayers.Layer.Vector('clusterLayer');
         map.addLayer(clusterLayer);
+        
+        // cluster layer secondary
+        cluLayer2 = new OpenLayers.Layer.Vector('clusterLayer small');
+        map.addLayer(cluLayer2);
 
 		var codeFeatures = new Array();
 		codeFeatures = codeAll(transedFeatures,20,0);
@@ -237,7 +241,8 @@
 
 				// curZoom-3
                 var quadLevel = curZoom + 2;
-
+                
+                // window query
 				for(var i=0;i!=inFeatures.length;++i) {
 					inFeatures[i].attributes.ds[quadLevel/*curZoom-3*/] = 0;
 				}
@@ -245,17 +250,32 @@
 				if(inFeatures.length!=0) {
 					for(var i=0;i!=9;++i) {
 						// dScoreFine(inFeatures,curZoom-3,map.getExtent(),i);
-            			calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i);
+            			calculateScoreInWindow(inFeatures, quadLevel, map.getExtent(), i); 		// primary
+            			calculateScoreInWindow(inFeatures, quadLevel+2, map.getExtent(), i);	// secondary
         			}
 					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
 				}
 
         		var clusteredFeatures = new Array();
 				clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
-
+				
+				// primary symbols
 				clusterLayer.removeAllFeatures();
-				for(i=0;i<clusteredFeatures.length;++i){
+				for (i=0; i<clusteredFeatures.length; ++i) {
+					clusterFeatures[i].style.graphicWidth = 45;
+					clusterFeatures[i].style.graphicHeight = 45;
 					clusterLayer.addFeatures([clusteredFeatures[i]]);
+				}
+				
+				var cluFeat2 = new Array();
+				cluFeat2 = quadTreeCluster(inFeatures, quadLevel+2, 9);
+				
+				// secondary symbols
+				cluLayer.removeAllFeatures();
+				for (i = 0; i < cluFeat2.length; ++i) {
+					cluFeat2[i].style.graphicWidth = 12;
+					cluFeat2[i].style.graphicHeight = 12;
+					cluLayer.addFeatures([cluFeat2[i]]);
 				}
 
 				d2 = new Date();
