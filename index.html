@@ -133,6 +133,7 @@
         originalLayer.setVisibility(false);
         // set the transparency of the original data layer
         //originalLayer.setOpacity(0.5);
+        console.log("feature reprojected.");
 
 		//cluster layer primary
 		clusterLayer = new OpenLayers.Layer.Vector('clusterLayer');
@@ -143,7 +144,7 @@
         map.addLayer(cluLayer2);
 
 		var codeFeatures = new Array();
-		codeFeatures = codeAll(transedFeatures,10,0);
+		codeFeatures = codeAll(transedFeatures,5,0);
 
         var Style02 = {
             externalGraphic: "./img/whu.jpg",
