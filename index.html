@@ -104,7 +104,7 @@
 		// }
 
         // test random distribution
-        numRandom = 500000;
+        numRandom = 500001;
         for (var i = 0; i < numRandom; ++i) {
             var _feat = new OpenLayers.Feature.Vector();
             _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
@@ -144,7 +144,7 @@
         map.addLayer(cluLayer2);
 
 		// var codeFeatures = new Array();
-		var codeFeatures = codeAll(transedFeatures,20,0);
+		var codeFeatures = codeAll(transedFeatures,10,0);
 
         var Style02 = {
             externalGraphic: "./img/whu.jpg",
