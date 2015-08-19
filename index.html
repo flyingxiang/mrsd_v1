@@ -104,7 +104,7 @@
 		// }
 
         // test random distribution
-        numRandom = 100000;
+        numRandom = 100001;
         for (var i = 0; i < numRandom; ++i) {
             var _feat = new OpenLayers.Feature.Vector();
             _feat.geometry = new OpenLayers.Geometry.Point(randomValue(180), randomValue(80));
@@ -143,8 +143,8 @@
         cluLayer2 = new OpenLayers.Layer.Vector('clusterLayer small');
         map.addLayer(cluLayer2);
 
-		var codeFeatures = new Array();
-		codeFeatures = codeAll(transedFeatures,20,0);
+		// var codeFeatures = new Array();
+		var codeFeatures = codeAll(transedFeatures,20,0);
 
         var Style02 = {
             externalGraphic: "./img/whu.jpg",
@@ -258,8 +258,8 @@
 					//dScoreFine(inFeatures,curZoom-3,map.getExtent(),0);
 				}
 
-        		var clusteredFeatures = new Array();
-				clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
+        		// var clusteredFeatures = new Array();
+				var clusteredFeatures = quadTreeCluster(inFeatures, quadLevel/*curZoom-3*/, 9);
 				
 				// primary symbols
 				clusterLayer.removeAllFeatures();
