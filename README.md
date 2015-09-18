@@ -1,16 +1,21 @@
 # Javascript implementation of multi-resolution selective distinction (version one)
 
 Author:<br>
-[Shaodong Wang (unclejimbo)](http://unclejimbo.github.io/)<br>
-[Xiang Zhang]() <tt>&lt;[xiang.zhang@whu.edu.cn](mailto:xiang.zhang@whu.edu.cn)&gt;</tt><br>
+[Shaodong Wang (unclejimbo)](http://unclejimbo.github.io/)<br/>
+[Xiang Zhang]() <tt>&lt;[xiang.zhang@whu.edu.cn](mailto:xiang.zhang@whu.edu.cn)&gt;</tt><br/>
 
 This is a student project aiming to make the best use of a map space for pining icons or photos on the map. This should allow a maximum use of space and avoid overlap of icons a.s.a.p. More icons will show up as the map zooms in.
 
 ## Snapshots
+<p>
+Raw data points before processing <br/>
 <a href="http://flyingxiang.github.io/mrsd_v1/index.html">
-<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/raw_data.jpg" title="raw data points before processing">
-<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/selected_data.jpg" title="selected points with symbols">
+<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/raw_data.jpg" title="raw data points before processing"></a>
+Selected points with symbols <br/>
+<a href="http://flyingxiang.github.io/mrsd_v1/index.html">
+<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/selected_data.jpg" title="selected points with symbols"></a>
 </a>
+</p>
 
 ## Technologies
 -   OpenLayers library is used to interact with base maps.
