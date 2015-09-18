@@ -14,7 +14,7 @@ This is a student project aiming to make the best use of a map space for pining 
 
 ## Technologies
 -   OpenLayers library is used to interact with base maps.
--   Map tiles and aerial image tiles are served from the free MapQuest-OSM source.
+-   Map tiles and aerial image tiles are requested from the MapQuest/Mapbox tile servers.
 -   MRSD structure and algorithm is implemented from scratch based on a Quadtree structure.
 
 ## Limitations
