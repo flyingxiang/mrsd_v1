@@ -4,8 +4,8 @@
 [Shaodong Wang (unclejimbo)](http://unclejimbo.github.io/)<br/>
 [Xiang Zhang]() <tt>&lt;[xiang.zhang@whu.edu.cn](mailto:xiang.zhang@whu.edu.cn)&gt;</tt><br/>
 
-## Introduction
-This is a student project aiming to make the best use of a map space for pining icons or photos on the map. This should allow a maximum use of space and avoid overlap of icons a.s.a.p. More icons will show up as the map zooms in.
+## Brief introduction
+This is a student project aiming to make the best use of a map space for pining icons or photos on the map. This should be able to allow a maximum use of the free space available and avoid overlap of icons a.s.a.p. More icons will show up as the map zooms in.
 
 Here is the [live map](http://flyingxiang.github.io/mrsd_v1/index.html) of this implementation. Feel free to play around and feedbacks are welcomed;-)
 
