@@ -1,7 +1,8 @@
 # Multi-resolution selective distinction (version one)
 This is a student project aiming to make the best use of a map space for pining icons or photos on the map. This should allow a maximum use of space and avoid overlap of icons a.s.a.p. More icons will show up as the map zooms in.
 
-<a href="http://flyingxiang.github.io/mrsd_v1/index.html"><img src="https://raw.github.com/NelsonMinar/vector-river-map/master/sample.jpg" alt="sample map"></a>
+<a href="http://flyingxiang.github.io/mrsd_v1/index.html"><img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/raw_data.png" alt="sample map">
+<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/selected_data.png" alt="sample map"></a>
 
 ## Technologies
 -   OpenLayers library is used to interact with base maps.
