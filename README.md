@@ -6,6 +6,8 @@ Author:<br>
 
 This is a student project aiming to make the best use of a map space for pining icons or photos on the map. This should allow a maximum use of space and avoid overlap of icons a.s.a.p. More icons will show up as the map zooms in.
 
+Here is the [live map](http://flyingxiang.github.io/mrsd_v1/index.html) of this implementation. Feel free to play around and feedbacks are welcomed;-)
+
 ## Snapshots
 <p>
 Raw data points before processing <br/>
