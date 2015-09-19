@@ -82,11 +82,14 @@
                        "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];
         var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
 
-        var arrayMapBox = ["https://api.tiles.mapbox.com/v4/mapbox.streets/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
-        var mapboxLayer = new OpenLayers.Layer.OSM("MapBox street", arrayMapBox);
-
+        var stringMB1 = ["https://api.tiles.mapbox.com/v4/mapbox.streets/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+        var mapboxLayer1 = new OpenLayers.Layer.OSM("MapBox street", stringMB1);
+        
+        var stringMB2 = ["https://api.tiles.mapbox.com/v4/mapbox.dark/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+		var mapboxLayer2 = new OpenLayers.Layer.OSM("MapBox dark", stringMB2);
+		
 		originalLayer = new OpenLayers.Layer.Vector('originalLayer');
-		map.addLayers([baseOSM,baseAerial,mapboxLayer,originalLayer]);
+		map.addLayers([baseOSM, baseAerial, mapboxLayer1, mapboxLayer2, originalLayer]);
 
 		//original layer
         var my = new Array();
