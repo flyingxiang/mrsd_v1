@@ -69,18 +69,19 @@
 			new OpenLayers.Control.LayerSwitcher(),
 			new OpenLayers.Control.PanZoomBar()
 		]);
+	
+	// MapQuest has closed its map services to free accounts
+//         var arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+//                     "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+//                     "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+//                     "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
+//         var baseOSM = new OpenLayers.Layer.OSM("MapQuest-OSM Tiles", arrayOSM);
 
-        var arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-                    "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-                    "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-                    "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
-        var baseOSM = new OpenLayers.Layer.OSM("MapQuest-OSM Tiles", arrayOSM);
-
-        var arrayAerial = ["http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-                       "http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-                       "http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-                       "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];
-        var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
+//         var arrayAerial = ["http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+//                        "http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+//                        "http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+//                        "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];
+//         var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
 
         var stringMB1 = ["https://api.tiles.mapbox.com/v4/mapbox.streets/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
         var mapboxLayer1 = new OpenLayers.Layer.OSM("MapBox street", stringMB1);
@@ -88,8 +89,8 @@
         var stringMB2 = ["https://api.tiles.mapbox.com/v4/mapbox.dark/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
 		var mapboxLayer2 = new OpenLayers.Layer.OSM("MapBox dark", stringMB2);
 		
-		originalLayer = new OpenLayers.Layer.Vector('originalLayer');
-		map.addLayers([baseOSM, baseAerial, mapboxLayer1, mapboxLayer2, originalLayer]);
+	originalLayer = new OpenLayers.Layer.Vector('originalLayer');
+	map.addLayers([mapboxLayer1, mapboxLayer2, originalLayer]);
 
 		//original layer
         var my = new Array();
@@ -124,16 +125,16 @@
             pointerEvents: "visiblePainted"
         };
 		
-		var t_start = new Date();
+	var t_start = new Date();
 		
-		//改变投影
-		var transedFeatures = new Array();
-		for(var i=0;i<my.length;++i){
-			my[i].geometry.transform(data_proj,map_proj);
-			transedFeatures[i] = my[i];
-			transedFeatures[i].style = Style01;
-			originalLayer.addFeatures([my[i]]);
-		}
+	//改变投影
+	var transedFeatures = new Array();
+	for(var i=0;i<my.length;++i){
+		my[i].geometry.transform(data_proj,map_proj);
+		transedFeatures[i] = my[i];
+		transedFeatures[i].style = Style01;
+		originalLayer.addFeatures([my[i]]);
+	}
         originalLayer.setVisibility(false);
         // set the transparency of the original data layer
         // originalLayer.setOpacity(0.5);
@@ -147,8 +148,8 @@
         cluLayer2 = new OpenLayers.Layer.Vector('clusterLayer small');
         map.addLayer(cluLayer2);
 
-		// var codeFeatures = new Array();
-		var codeFeatures = codeAll(transedFeatures,20,0);
+	// var codeFeatures = new Array();
+	var codeFeatures = codeAll(transedFeatures,20,0);
 
         var Style02 = {
             externalGraphic: "./img/whu.jpg",
@@ -156,27 +157,28 @@
             graphicHeight: 45,
             pointerEvents: "visiblePainted"
         };
+		
         // change style of codeFeatures inherited from transedFeatures
         for (var i = 0; i < codeFeatures.length; ++i) {
             codeFeatures[i].style = Style02;
         }
 
-		var t_end = new Date();
-		console.log( "Building translated quadtree of " + numRandom + " objects takes " + (t_end-t_start)/1000 + "s." );
+	var t_end = new Date();
+	console.log( "Building translated quadtree of " + numRandom + " objects takes " + (t_end-t_start)/1000 + "s." );
 
-		//grid layer
-		var gridLayer = new OpenLayers.Layer.Vector('gridLayer');
+	//grid layer
+	var gridLayer = new OpenLayers.Layer.Vector('gridLayer');
         gridLayer.setVisibility(false);
-		map.addLayer(gridLayer);
+	map.addLayer(gridLayer);
 
-		//select feature popup
-		selectControl = new OpenLayers.Control.SelectFeature(clusterLayer);
-		map.addControl(selectControl);
-		selectControl.activate();
-		clusterLayer.events.on({
-			"featureselected": onFeatureSelect,
-			"featureunselected": onFeatureUnselect
-		});
+	//select feature popup
+	selectControl = new OpenLayers.Control.SelectFeature(clusterLayer);
+	map.addControl(selectControl);
+	selectControl.activate();
+	clusterLayer.events.on({
+		"featureselected": onFeatureSelect,
+		"featureunselected": onFeatureUnselect
+	});
 
 		//
 		// event handler
