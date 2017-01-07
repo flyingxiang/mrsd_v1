@@ -19,56 +19,58 @@
     }
 
     function load()
-	{
+    {
         // running into problems with POST:
         // maybe because the server is now configured to disable POST method
         // change it to GET, that should be allowed by all servers
         OpenLayers.Request.GET({
             url: "./data/flickr/6000.json",
             callback: parseData
-		});
+	});
 
         // don't read local files, generate points randomly
         // init();
     }
 
     function isInViewport(feature,bound){
-		var zoom = map.zoom;
-		var gridNum = Math.pow(2,zoom+2);
-		var shift = 40075016/gridNum;
-		var left = bound.left-shift;
-		var bottom = bound.bottom-shift;
-		var right = bound.right+shift;
-		var top = bound.top+shift;
-		var x = feature.geometry.x;
-		var y = feature.geometry.y;
-		if(x>left && x<right && y>bottom && y<top){
-			return true;
-		}else{
-			return false;
-		}
+	var zoom = map.zoom;
+	var gridNum = Math.pow(2,zoom+2);
+	var shift = 40075016/gridNum;
+	var left = bound.left-shift;
+	var bottom = bound.bottom-shift;
+	var right = bound.right+shift;
+	var top = bound.top+shift;
+	var x = feature.geometry.x;
+	var y = feature.geometry.y;
+	if(x>left && x<right && y>bottom && y<top){
+		return true;
+	}else{
+		return false;
 	}
+    }
 
     function init()
-	{
-		var callTimes = 0;
+    {
+	var callTimes = 0;
 
         // initialize map object
         var map_proj = new OpenLayers.Projection('EPSG:900913');
         var data_proj = new OpenLayers.Projection('EPSG:4326');
-        var options = {
+        
+	var options = {
             center: new OpenLayers.LonLat(-105,40).transform(data_proj,map_proj),
-			zoom: 4,
-			eventListeners: {
-				"moveend": mapEvent,
-				"zoomend": mapEvent
-			}
+	    zoom: 4,
+	    eventListeners: {
+		"moveend": mapEvent,
+		"zoomend": mapEvent
+	    }
         };
+	    
         map = new OpenLayers.Map('map',options);
-		map.addControls([
-			new OpenLayers.Control.LayerSwitcher(),
-			new OpenLayers.Control.PanZoomBar()
-		]);
+	map.addControls([
+		new OpenLayers.Control.LayerSwitcher(),
+		new OpenLayers.Control.PanZoomBar()
+	]);
 	
 	// MapQuest has closed its map services to free accounts
 //         var arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
@@ -83,20 +85,29 @@
 //                        "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"];
 //         var baseAerial = new OpenLayers.Layer.OSM("MapQuest Open Aerial Tiles", arrayAerial);
 
-        var stringMB1 = ["https://api.tiles.mapbox.com/v4/mapbox.streets/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
-        var mapboxLayer1 = new OpenLayers.Layer.OSM("MapBox street", stringMB1);
+        var strMBStreet = ["https://api.tiles.mapbox.com/v4/mapbox.streets/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+        var MBStreet = new OpenLayers.Layer.OSM("Mapbox street", strMBStreet);
         
-        var stringMB2 = ["https://api.tiles.mapbox.com/v4/mapbox.dark/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
-		var mapboxLayer2 = new OpenLayers.Layer.OSM("MapBox dark", stringMB2);
-		
+        var strMBLight = ["https://api.tiles.mapbox.com/v4/mapbox.light/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+	var MBLight = new OpenLayers.Layer.OSM("Mapbox light", strMBLight);
+	
+	var strMBDark = ["https://api.tiles.mapbox.com/v4/mapbox.dark/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+	var MBDark = new OpenLayers.Layer.OSM("Mapbox dark", strMBDark);
+	    
+        var strMBOutdoors = ["https://api.tiles.mapbox.com/v4/mapbox.outdoors/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+	var MBOutdoors = new OpenLayers.Layer.OSM("Mapbox outdoors", strMBOutdoors);
+	    
+	var strMBPirates = ["https://api.tiles.mapbox.com/v4/mapbox.pirates/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZmx5aW5neGlhbmciLCJhIjoiM0laVG9EYyJ9.nTyuISCA4g8Yt_6fLH0HZQ"];
+	var MBPirates = new OpenLayers.Layer.OSM("MapBox pirates", strMBPirates);
+	    
 	originalLayer = new OpenLayers.Layer.Vector('originalLayer');
-	map.addLayers([mapboxLayer1, mapboxLayer2, originalLayer]);
+	map.addLayers([strMBStreet, MBLight, MBDark, MBOutdoors, MBPirates, originalLayer]);
 
-		//original layer
-        var my = new Array();
-        var numRandom = 0;
+	//original layer
+    var my = new Array();
+    var numRandom = 0;
 
-		//解析json数据到feature
+	//解析json数据到feature
         for(var i=0;i<flickrData.length;++i) {
 			var photoSet = flickrData[i].photos.photo;
 			for(var j=0;j<photoSet.length;++j){
