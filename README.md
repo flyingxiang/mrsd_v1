@@ -12,12 +12,9 @@ Here is the [live map](http://flyingxiang.github.io/mrsd_v1/index.html) of this 
 ## Snapshots
 <p>
 Raw data points before processing <br/>
-<a href="http://flyingxiang.github.io/mrsd_v1/index.html">
-<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/raw_data.jpg" title="raw data points before processing"></a>
+<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/raw_data.jpg" title="raw data points before processing">
 Selected points with symbols <br/>
-<a href="http://flyingxiang.github.io/mrsd_v1/index.html">
-<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/selected_data.jpg" title="selected points with symbols"></a>
-</a>
+<img src="https://raw.githubusercontent.com/flyingxiang/mrsd_v1/gh-pages/selected_data.jpg" title="selected points with symbols">
 </p>
 
 ## Technologies
